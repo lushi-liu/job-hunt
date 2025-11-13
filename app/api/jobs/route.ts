@@ -8,7 +8,6 @@ const parser = new Parser();
 
 // RSS feed URLs
 const FEEDS = {
-  TokyoDev: 'https://www.tokyodev.com/jobs/feed.xml',
   RemoteOK: 'https://remoteok.com/remote-jobs.rss',
   WeWorkRemotely: 'https://weworkremotely.com/categories/remote-programming-jobs.rss',
 } as const;
@@ -34,16 +33,6 @@ function normalizeItem(
   let company = '';
   const location = '';
 
-  if (source === 'TokyoDev') {
-    const atIdx = title.indexOf(' at ');
-    if (atIdx !== -1) {
-      company = title
-        .slice(atIdx + 4)
-        .split('[')[0]
-        .trim();
-    }
-  }
-
   if (!company && item.creator) {
     company = item.creator;
   }
@@ -67,7 +56,7 @@ export async function GET(req: Request) {
   const query = searchParams.get('q') || '';
   const region = searchParams.get('region') || 'global';
 
-  const sources: SourceKey[] = ['TokyoDev', 'RemoteOK', 'WeWorkRemotely'];
+  const sources: SourceKey[] = ['RemoteOK', 'WeWorkRemotely'];
 
   try {
     const jobs: JobItem[] = [];
