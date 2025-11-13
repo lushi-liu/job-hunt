@@ -16,6 +16,7 @@ export default function Home() {
   const [jobs, setJobs] = useState<JobItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [entryOnly, setEntryOnly] = useState(false);
 
   const handleSearch = async (e?: FormEvent) => {
     if (e) e.preventDefault();
@@ -107,6 +108,15 @@ export default function Home() {
               {loading ? 'Searching…' : 'Search jobs'}
             </button>
           </form>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={entryOnly}
+              onChange={(e) => setEntryOnly(e.target.checked)}
+            />
+            <span className="text-sm">Entry-level only</span>
+          </div>
 
           <p className="text-xs text-slate-500">
             Data is fetched live from public RSS feeds. Always verify details on the

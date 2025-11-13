@@ -59,7 +59,7 @@ export async function GET(req: Request) {
   const sources: SourceKey[] = ['RemoteOK', 'WeWorkRemotely'];
 
   try {
-    const jobs: JobItem[] = [];
+    let jobs: JobItem[] = [];
 
     await Promise.all(
       sources.map(async (source) => {
@@ -75,6 +75,46 @@ export async function GET(req: Request) {
         }
       })
     );
+
+    // Entry-level filter
+    const entry = searchParams.get('entry') === 'true';
+
+    if (entry) {
+      const juniorAllow = [
+        /junior/i,
+        /entry/i,
+        /entry[- ]level/i,
+        /new grad/i,
+        /graduate/i,
+        /trainee/i,
+        /assistant/i,
+        /intern/i,
+        /associate/i,
+        /0-1/i,
+        /0-2/i,
+      ];
+
+      const seniorBlock = [
+        /senior/i,
+        /lead/i,
+        /staff/i,
+        /principal/i,
+        /manager/i,
+        /director/i,
+        /architect/i,
+        /\b5\+/i,
+        /\b4\+/i,
+      ];
+
+      const isJunior = (j: JobItem) => {
+        const text = `${j.title} ${j.summary || ''}`.toLowerCase();
+
+        if (seniorBlock.some((re) => re.test(text))) return false;
+        return juniorAllow.some((re) => re.test(text));
+      };
+
+      jobs = jobs.filter(isJunior);
+    }
 
     jobs.sort((a, b) => {
       const da = a.publishedAt ? Date.parse(a.publishedAt) : 0;
