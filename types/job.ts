@@ -1,4 +1,9 @@
-export type JobSource = 'TokyoDev' | 'RemoteOK' | 'WeWorkRemotely';
+export type JobSource =
+  | 'RemoteOK'
+  | 'WeWorkRemotely'
+  | 'Remotive'
+  | 'WorkingNomads'
+  | 'JSRemotely';
 
 export interface JobItem {
   id: string;

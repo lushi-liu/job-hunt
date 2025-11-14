@@ -26,6 +26,7 @@ export default function Home() {
       const params = new URLSearchParams({
         q: query,
         region,
+        entry: entryOnly ? 'true' : 'false',
       });
       const res = await fetch(`/api/jobs?${params.toString()}`);
       const data = await res.json();

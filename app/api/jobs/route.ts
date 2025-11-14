@@ -10,6 +10,9 @@ const parser = new Parser();
 const FEEDS = {
   RemoteOK: 'https://remoteok.com/remote-jobs.rss',
   WeWorkRemotely: 'https://weworkremotely.com/categories/remote-programming-jobs.rss',
+  Remotive: 'https://remotive.com/remote-jobs/software-dev.rss',
+  WorkingNomads: 'https://www.workingnomads.com/jobs.rss?category=development',
+  JSRemotely: 'https://jsremotely.com/rss',
 } as const;
 
 type SourceKey = keyof typeof FEEDS;
@@ -56,7 +59,13 @@ export async function GET(req: Request) {
   const query = searchParams.get('q') || '';
   const region = searchParams.get('region') || 'global';
 
-  const sources: SourceKey[] = ['RemoteOK', 'WeWorkRemotely'];
+  const sources: SourceKey[] = [
+    'RemoteOK',
+    'WeWorkRemotely',
+    'Remotive',
+    'WorkingNomads',
+    'JSRemotely',
+  ];
 
   try {
     let jobs: JobItem[] = [];
